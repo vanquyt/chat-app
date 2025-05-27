@@ -5,7 +5,7 @@ import toast from "react-hot-toast"; // Thêm toast để thông báo lỗi
 
 export default function ProfilePage() {
     const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
