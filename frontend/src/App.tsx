@@ -6,18 +6,25 @@ import SettingsPage from "./pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import { useEffect } from "react";
-import { useAuthStore } from "./store/useAuthStore";
+import { useThemeStore } from "./store/useThemeStore";
 import { Toaster } from "react-hot-toast";
+import { useAuthStore } from "./store/useAuthStore";
 
 const App = () => {
 
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const {theme} = useThemeStore()
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
 
   console.log({ authUser });
+
+  useEffect(() => {
+    // Đồng bộ data-theme trên <html>
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   if (isCheckingAuth && !authUser) {
     return <div>Loading...</div>;
