@@ -5,20 +5,22 @@ import toast from "react-hot-toast";
 
 export default function MessageInput() {
     const [text, setText] = useState("");
-    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const { sendMessage } = useChatStore();
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (!file.type.startsWith("image/")) {
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !file.type.startsWith("image/")) {
           toast.error("Please select an image file");
           return;
         }
     
         const reader = new FileReader();
         reader.onloadend = () => {
-          setImagePreview(reader.result);
+          if (typeof reader.result === "string") {
+            setImagePreview(reader.result);
+          }
         };
         reader.readAsDataURL(file);
       };
@@ -28,7 +30,7 @@ export default function MessageInput() {
         if (fileInputRef.current) fileInputRef.current.value = "";
       };
 
-      const handleSendMessage = async (e) => {
+      const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!text.trim() && !imagePreview) return;
     
@@ -53,7 +55,7 @@ export default function MessageInput() {
                 <div className="mb-3 flex items-center gap-2">
                     <div className="relative">
                         <img
-                            src={imagePreview}
+                            src={typeof imagePreview === "string" ? imagePreview : undefined}
                             alt="Preview"
                             className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
                         />
