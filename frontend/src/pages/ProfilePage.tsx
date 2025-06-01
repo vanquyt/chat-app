@@ -7,8 +7,8 @@ export default function ProfilePage() {
     const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-    const handleImageUpload = async (e) => {
-        const file = e.target.files[0];
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
         if (!file) return;
 
         // Kiểm tra kiểu file

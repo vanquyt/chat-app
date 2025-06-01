@@ -6,6 +6,14 @@ import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../store/useAuthStore";
 import { formatMessageTime } from "../lib/ultis";
 
+interface Message {
+    _id: string;
+    senderId: string;
+    createdAt: string | Date;
+    image?: string;
+    text?: string;
+  }
+
 export default function ChatContainer() {
     const { messages, getMessages, isMessagesLoading, selectedUser, subscribeToMessages, unsubscribeFromMessages } = useChatStore();
     const { authUser } = useAuthStore();
@@ -40,7 +48,7 @@ export default function ChatContainer() {
             <ChatHeader />
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((message) => (
+                {messages.map((message: Message) => (
                     <div
                         key={message._id}
                         className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}

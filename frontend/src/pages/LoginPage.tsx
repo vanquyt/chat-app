@@ -12,7 +12,7 @@ export default function LoginPage() {
     });
     const { login, isLoggingIn } = useAuthStore();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         login(formData);
     };
